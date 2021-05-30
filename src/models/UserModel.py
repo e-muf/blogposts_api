@@ -1,7 +1,8 @@
-from marshmallow import fields, Schema
 import datetime
+from marshmallow import fields, Schema
 
-from . import db
+from . import db, bcrypt
+from .BlogpostModel import BlogpostSchema
 
 class UserModel(db.Model):
   """
@@ -17,6 +18,7 @@ class UserModel(db.Model):
   password = db.Column(db.String(128), nullable=True)
   created_at = db.Column(db.DateTime)
   modified_at = db.Column(db.DateTime)
+  blogposts = db.relationship('BlogpostModel', backref='users', lazy=True)
 
   # class constructor
   def __init__(self, data):
@@ -36,10 +38,10 @@ class UserModel(db.Model):
   def update(self, data):
     for key, item in data.items():
       if key == 'password':
-        self.password = self.__generate_hash(value)
+        self.password = self.__generate_hash(item)
       setattr(self, key, item)
     
-    self.modified_at = datatime.datetime.utcnow()
+    self.modified_at = datetime.datetime.utcnow()
     db.session.commit()
 
   def delete(self):
@@ -57,8 +59,21 @@ class UserModel(db.Model):
     return UserModel.query.all()
 
   @staticmethod
-  def get_one_user():
+  def get_one_user(id):
     return UserModel.query.get(id)
 
-  def __repr(self):
+  def __repr__(self):
     return '<id {}>'.format(self.id)
+
+class UserSchema(Schema):
+  """
+  User Schema
+  """
+  id = fields.Int(dump_only=True)
+  name = fields.Str(required=True)
+  email = fields.Email(required = True)
+  password = fields.Str(required=True)
+  created_at = fields.DateTime(dump_only=True)
+  modified_at = fields.DateTime(dump_only=True)
+  blogposts = fields.Nested(BlogpostSchema, many=True)
+
