@@ -1,7 +1,8 @@
 import datetime
 from marshmallow import fields, Schema
 
-from . import db, bcrypt
+from . import db
+from ..app import bcrypt
 from .BlogpostModel import BlogpostSchema
 
 class UserModel(db.Model):
