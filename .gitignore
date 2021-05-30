@@ -150,6 +150,7 @@ Thumbs.db
 .prof
 
 ### VisualStudioCode ###
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
