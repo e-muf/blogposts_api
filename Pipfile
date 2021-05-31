@@ -10,8 +10,8 @@ psycopg2 = "*"
 flask-script = "*"
 marshmallow = "*"
 flask-bcrypt = "*"
-pyjwt = "*"
 flask-migrate = "==2.7.0"
+pyjwt = "==1.7.1"
 
 [dev-packages]
 pylint = "*"

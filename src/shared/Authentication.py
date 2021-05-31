@@ -2,6 +2,8 @@ import jwt
 import os
 import datetime
 from flask import json, Response, request, g
+from functools import wraps
+
 from ..models.UserModel import UserModel
 
 class Auth:
@@ -16,7 +18,7 @@ class Auth:
     try:
       payload = {
         'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1),
-        'lat': datetime.datetime.utcnow(),
+        'iat': datetime.datetime.utcnow(),
         'sub': user_id
       }
 
@@ -27,6 +29,7 @@ class Auth:
       ).decode('utf-8')
 
     except Exception as e:
+      print('DEBUG:', e)
       return Response(
         mimetype="application/json",
         response=json.dumps({'error': 'error in generating user token'}),
@@ -60,13 +63,13 @@ class Auth:
     """
     @wraps(func)
     def decorated_auth(*args, **kwargs):
-      if 'api-token' not in request.header:
+      if 'api-token' not in request.headers:
         return Response(
           mimetype='application/json',
           response=json.dump({'error': 'Authentication token is not available, please login to get one'}),
           status=400
         )
-      token = request.header.get('api-token')
+      token = request.headers.get('api-token')
       data = Auth.decode_token(token)
 
       if data['error']:
