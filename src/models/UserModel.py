@@ -63,6 +63,10 @@ class UserModel(db.Model):
   def get_one_user(id):
     return UserModel.query.get(id)
 
+  @staticmethod
+  def get_user_by_email(email):
+    return UserModel.query.filter_by(email=email).first()
+
   def __repr__(self):
     return '<id {}>'.format(self.id)
 
