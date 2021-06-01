@@ -12,6 +12,7 @@ marshmallow = "*"
 flask-bcrypt = "*"
 flask-migrate = "==2.7.0"
 pyjwt = "==1.7.1"
+gunicorn = "*"
 
 [dev-packages]
 pylint = "*"
