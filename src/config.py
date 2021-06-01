@@ -20,7 +20,15 @@ class ProductionConfig(Config):
   """
   DEBUG = False
 
+class TestingConfig(Config):
+  """
+  Testing environment configuration
+  """
+  TESTING = True
+  SQLALCHEMY_TRACK_MODIFICATIONS = False
+
 app_config = {
   'development': DevelopmentConfig,
   'production': ProductionConfig,
+  'testing': TestingConfig
 }

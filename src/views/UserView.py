@@ -31,7 +31,7 @@ def create():
 
   token = Auth.generate_token(user_data.get('id'))
 
-  return custom_response({'jwt_token': token}, 200)
+  return custom_response({'jwt_token': token}, 201)
 
 @user_api.route('/', methods=['GET'])
 @Auth.auth_required
